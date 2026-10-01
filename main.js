@@ -1,14 +1,18 @@
-// Classificador de Nível de Herói
-const readline = require("readline");
+const readline = require("readline/promises");
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-rl.question("Digite o nome do herói: ", (nome) => {
+async function classificarHerois() {
 
-    rl.question("Digite a quantidade de XP: ", (respostaXP) => {
+    let continuar = "s";
+
+    while (continuar.toLowerCase() === "s") {
+
+        const nome = await rl.question("Digite o nome do herói: ");
+        const respostaXP = await rl.question("Digite a quantidade de XP: ");
 
         const xp = Number(respostaXP);
 
@@ -32,9 +36,20 @@ rl.question("Digite o nome do herói: ", (nome) => {
             nivel = "Radiante";
         }
 
+        console.log("");
         console.log(`O Herói de nome ${nome} está no nível de ${nivel}`);
+        console.log("");
 
-        rl.close();
-    });
-});
+        continuar = await rl.question(
+            "Deseja classificar outro herói? (s/n): "
+        );
 
+        console.log("");
+    }
+
+    console.log("Programa encerrado.");
+
+    rl.close();
+}
+
+classificarHerois();
